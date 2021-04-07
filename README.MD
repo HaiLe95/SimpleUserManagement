@@ -9,7 +9,7 @@ It's oversimplified Restfull application that provide basic CRUD operation to ma
 HTTP endpoints down below:
 
 - <b>POST /user/</b>        to create the User.
-- <b>GET /user/id/</b>      to receive specific User by ID.
+- <b>GET /user/id/</b>      to receive specific User by his ID.
 - <b>PUT /user/id/</b>      to update specific User.
 - <b>DELETE /user/id</b>    to delete specific User.
 - <b>GET /user/</b>         to search all Users with specific parameters.

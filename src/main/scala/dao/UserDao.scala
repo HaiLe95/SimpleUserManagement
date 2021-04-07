@@ -13,7 +13,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration._
 
 /**
- * Provides DAL for Users entities for H2 database
+ * Provides DAO for Users entities for H2 database
  */
 
 class UserDao extends Configuration{

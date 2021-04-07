@@ -8,7 +8,7 @@ package domain
  * @param lastName    Lastname of our User;
  * @param birthday    wow the Birthday of User, Option[] because can be Null in DB;
  */
-case class User(id: Long,
+case class User(id: Option[Long],
                 firstName: String,
                 lastName: String,
                 birthday: Option[java.util.Date])

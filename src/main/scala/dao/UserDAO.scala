@@ -7,8 +7,7 @@ import config.Configuration
 import slick.jdbc.H2Profile.api._
 
 import java.sql.SQLException
-
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
@@ -23,9 +22,14 @@ class UserDAO extends Configuration {
   val database = Database.forConfig("h2mem1")
   val users = UsersTable.users
 
-
+  /**
+   * Creates a new row in Database //TODO prob can have some issues with
+   * @param user is object representation of our row, but the ID won't be applied
+   * @return the user's id or Failure if exception is trowed
+   */
   def create(user: User): Future[Either[Failure, Long]] = {
-    val query = users.returning(users.map(_.id)) += user
+    val query = users.returning(users.map(_.id)) +=
+      User(None, user.firstName, user.lastName, user.birthday)
     database.run(
       query)
       .map(Right(_))
@@ -34,21 +38,49 @@ class UserDAO extends Configuration {
       }
   }
 
+  /**
+   * Receive a specific user
+   * @param id is used to track the right entity
+   * @return the user it self, or if there's no row None instead
+   */
   def get(id: Long): Future[Option[User]] = {
     val query = users.filter(_.id === id)
-    database.run(query.result.headOption)
+    database.run(
+      query
+        .result
+        .headOption)
   }
 
+  /**
+   * Update the specific row with new entity
+   * @param id that used to find the right row
+   * @param user is a new data that we want to update our user
+   * @return numbers of changed rows(in most cases will be 1), or exception
+   */
   def update(id: Long, user: User): Future[Int] = {
     val query = users.filter(_.id === id)
-    database.run(query.update(user))
+    database.run(
+      query
+        .update(user))
   }
 
+  /**
+   * The delete specific row by id
+   * @param id is used to find right user
+   * @return numbers of deleted rows
+   */
   def delete(id: Long): Future[Int] = {
     val query = users.filter(_.id == id)
-    database.run(query.delete)
+    database.run(
+      query
+        .delete)
   }
 
+  /**
+   * Get all users with specified parameters
+   * @param param all those fields to search in our database
+   * @return the Sequence of Users
+   */
   def search(param: UserSearchParameters): Future[Seq[User]] = {
     val query = users
       .filterOpt(param.firstName)((user, firstname) =>

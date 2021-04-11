@@ -7,11 +7,10 @@ import config.Configuration
 import slick.jdbc.H2Profile.api._
 
 import java.sql.SQLException
-import scala.concurrent.Await
-import scala.concurrent.duration._
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.Try
+
 
 
 /**
@@ -35,19 +34,15 @@ class UserDAO extends Configuration {
       }
   }
 
-
   def get(id: Long): Future[Option[User]] = {
     val query = users.filter(_.id === id)
     database.run(query.result.headOption)
   }
 
-
-
   def update(id: Long, user: User): Future[Int] = {
     val query = users.filter(_.id === id)
     database.run(query.update(user))
   }
-
 
   def delete(id: Long): Future[Int] = {
     val query = users.filter(_.id == id)
@@ -65,8 +60,7 @@ class UserDAO extends Configuration {
     database.run(query.result)
   }
 
-
-  // Service method, another dry stuff
+  // Service method
   private def databaseError(exception: SQLException): Failure = {
     import domain.FailureType
     Failure("%d: %s"
@@ -74,13 +68,13 @@ class UserDAO extends Configuration {
       FailureType.DatabaseFailure)
   }
 
-  //service method
+  //service method TODO maybe should be deleted
   private def notFoundError(id: Long): Failure = {
     Failure("User with id=%id does not exist"
       .format(id),
       FailureType.NotFound)
   }
-  //service method
+  //service method TODO maybe should be deleted
   private def notFoundError(msg: String): Failure = {
     Failure(msg, FailureType.NotFound)
   }

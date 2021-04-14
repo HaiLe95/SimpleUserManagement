@@ -1,13 +1,16 @@
 package com.haile.app
 package dao
 
-import domain.{Failure, FailureType, User, UserSearchParameters, UsersTable}
-import config.Configuration
+import com.haile.app.domain.User
+import com.haile.app.domain.UserSearchParameters
+import com.haile.app.database.UsersTable
+import com.haile.app.failure.Failure
+import com.haile.app.util.DatabaseFailureMapper
 
 import slick.jdbc.H2Profile.api._
 
 import java.sql.SQLException
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
@@ -16,25 +19,34 @@ import scala.concurrent.ExecutionContext.Implicits.global
  * Provides DAO for Users entities for H2 database
  */
 
-class UserDAO extends Configuration {
+class UserDAO {
 
   // Initializing database instance and importing UserTableQuery
   val database = Database.forConfig("h2mem1")
   val users = UsersTable.users
 
   /**
-   * Creates a new row in Database //TODO prob can have some issues with
+   * Creates a new row in Database
    * @param user is object representation of our row, but the ID won't be applied
-   * @return the user's id or Failure if exception is trowed
+   * @return the entity with new id or Failure if exception is thrown
    */
-  def create(user: User): Future[Either[Failure, Long]] = {
+  def create(user: User): Future[Either[Failure, User]] = {
     val query = users.returning(users.map(_.id)) +=
       User(None, user.firstName, user.lastName, user.birthday)
     database.run(
       query)
-      .map(Right(_))
+      .map(newId =>
+        Right(
+          user
+            .copy(id = Some(newId))
+        )
+      )
       .recoverWith {
-        case e: SQLException => Future(Left(databaseError(e)))
+        case e: SQLException =>
+          Future(Left(
+            DatabaseFailureMapper
+              .databaseError(e)
+          ))
       }
   }
 
@@ -61,7 +73,12 @@ class UserDAO extends Configuration {
     val query = users.filter(_.id === id)
     database.run(
       query
-        .update(user))
+        .update(
+          User(Some(id),
+            user.firstName,
+            user.lastName,
+            user.birthday)
+        ))
   }
 
   /**
@@ -70,7 +87,7 @@ class UserDAO extends Configuration {
    * @return numbers of deleted rows
    */
   def delete(id: Long): Future[Int] = {
-    val query = users.filter(_.id == id)
+    val query = users.filter(_.id === id)
     database.run(
       query
         .delete)
@@ -92,22 +109,4 @@ class UserDAO extends Configuration {
     database.run(query.result)
   }
 
-  // Service method
-  private def databaseError(exception: SQLException): Failure = {
-    import domain.FailureType
-    Failure("%d: %s"
-      .format(exception.getErrorCode, exception.getMessage),
-      FailureType.DatabaseFailure)
-  }
-
-  //service method TODO maybe should be deleted
-  private def notFoundError(id: Long): Failure = {
-    Failure("User with id=%id does not exist"
-      .format(id),
-      FailureType.NotFound)
-  }
-  //service method TODO maybe should be deleted
-  private def notFoundError(msg: String): Failure = {
-    Failure(msg, FailureType.NotFound)
-  }
 }

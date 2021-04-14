@@ -11,4 +11,4 @@ package domain
 case class User(id:         Option[Long],
                 firstName:  String,
                 lastName:   String,
-                birthday:   Option[java.util.Date])
+                birthday:   Option[java.sql.Date])

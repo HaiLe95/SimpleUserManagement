@@ -1,13 +1,9 @@
 package com.haile.app
-package domain
+package failure
 
 
-/** The Official documentation by Hai Le, 07.04.21
- * What the hell in the world is this???
- * How does it even works???
- */
-
-import spray.http.{StatusCodes, StatusCode}
+import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.model.StatusCode
 
 /**
  * Service failure description
@@ -15,10 +11,6 @@ import spray.http.{StatusCodes, StatusCode}
  * @param errorType   the error type
  */
 case class Failure(message: String, errorType: FailureType.Value) {
-  /**
-   * Return corresponding HTTP status code for failure specified type
-   * @return HTTP status code
-   */
   def getStatusCode(): StatusCode = {
     FailureType.withName(this.errorType.toString) match {
       case FailureType.BadRequest       => StatusCodes.BadRequest

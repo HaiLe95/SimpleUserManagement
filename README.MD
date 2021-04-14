@@ -19,10 +19,9 @@ HTTP endpoints down below:
 
 - Scala 2.13    - As main programming language.
 - SBT           - Mainstream build tool for scala projects.
-- Spray         - Framework that simplifies building RESTful web-services.
 - Akka          - Mainstream library for creating high-performance applications. 
 - Slick         - Most used ORM library in scala environment.
 - H2            - Simple and lightweight Database.
 - Lift-json     - Library for simplifying work with JSON.
-- Logback       - Classic logging utility.
+- Logback       - Classic logging utility. 
 

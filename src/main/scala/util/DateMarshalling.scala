@@ -7,9 +7,12 @@ import scala.util.Try
 import spray.json._
 
 object DateMarshalling {
+
   implicit object DateFormat extends JsonFormat[Date] {
-    def write(date: Date) = JsString(dateToIsoString(date))
-    def read(json: JsValue) = json match {
+
+    def write(date: Date): JsString = JsString(dateToIsoString(date))
+
+    def read(json: JsValue): Date = json match {
       case JsString(rawDate) =>
         parseIsoDateString(rawDate)
           .fold(deserializationError(s"Expected ISO Date format, got $rawDate"))(identity)
@@ -18,10 +21,10 @@ object DateMarshalling {
   }
 
   private val localIsoDateFormatter = new ThreadLocal[SimpleDateFormat] {
-    override def initialValue() = new SimpleDateFormat("yyyy-MM-dd")
+    override def initialValue() = new SimpleDateFormat("dd-MM-yyyy")
   }
 
-  private def dateToIsoString(date: Date) =
+  private def dateToIsoString(date: Date): String =
     localIsoDateFormatter.get().format(date)
 
   private def parseIsoDateString(date: String): Option[Date] = {
@@ -30,4 +33,5 @@ object DateMarshalling {
       new Date(time.getTime)
     }.toOption
   }
+
 }

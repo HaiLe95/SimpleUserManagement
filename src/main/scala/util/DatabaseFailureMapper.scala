@@ -17,8 +17,9 @@ object DatabaseFailureMapper {
   }
 
   def notFoundError(id: Long): Failure = {
-    Failure("User with id=%id does not exist"
+    Failure(s"User with id= $id does not exist"
       .format(id),
       FailureType.NotFound)
   }
+
 }

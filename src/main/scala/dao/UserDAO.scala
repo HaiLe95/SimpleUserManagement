@@ -6,7 +6,6 @@ import com.haile.app.domain.UserSearchParameters
 import com.haile.app.database.UsersTable
 import com.haile.app.failure.Failure
 import com.haile.app.util.DatabaseFailureMapper
-
 import slick.jdbc.H2Profile.api._
 
 import java.sql.SQLException
@@ -15,15 +14,19 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 
 
+
 /**
  * Provides DAO for Users entities for H2 database
  */
 
-class UserDAO {
+object UserDAO {
 
   // Initializing database instance and importing UserTableQuery
   val database = Database.forConfig("h2mem1")
   val users = UsersTable.users
+
+  // check if table exists
+  database.run(users.schema.createIfNotExists)
 
   /**
    * Creates a new row in Database

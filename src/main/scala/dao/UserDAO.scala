@@ -35,7 +35,7 @@ object UserDAO {
    */
   def create(user: User): Future[Either[Failure, User]] = {
     val query = users.returning(users.map(_.id)) +=
-      User(None, user.firstName, user.lastName, user.birthday)
+      User(None, user.firstName, user.lastName, user.birthday, true)
     database.run(
       query)
       .map(newId =>
@@ -59,7 +59,9 @@ object UserDAO {
    * @return the user it self, or if there's no row None instead
    */
   def get(id: Long): Future[Option[User]] = {
-    val query = users.filter(_.id === id)
+    val query = users
+      .filter(_.id === id)
+      .filter(_.isAvailable)
     database.run(
       query
         .result
@@ -80,20 +82,23 @@ object UserDAO {
           User(Some(id),
             user.firstName,
             user.lastName,
-            user.birthday)
+            user.birthday,
+            user.isAvailable)
         ))
   }
 
   /**
    * The delete specific row by id
    * @param id is used to find right user
-   * @return numbers of deleted rows
+   * @return numbers of "deleted" users. The true is all of them become not available.
    */
   def delete(id: Long): Future[Int] = {
-    val query = users.filter(_.id === id)
+    val query = users
+      .filter(_.id === id)
+      .map(_.isAvailable)
     database.run(
       query
-        .delete)
+        .update(false))
   }
 
   /**
@@ -109,6 +114,7 @@ object UserDAO {
       user.lastName === lastname)
       .filterOpt(param.birthday)((user, birthday)   =>
       user.birthday === birthday)
+      .filter(_.isAvailable)
     database.run(query.result)
   }
 

@@ -24,7 +24,7 @@ object Boot {
   implicit val system = ActorSystem(Behaviors.empty, "boot")
   implicit val executionContext = system.executionContext
 
-  implicit val userFormat = jsonFormat4(User)
+  implicit val userFormat = jsonFormat5(User)
 
   val userDao = UserDAO
 

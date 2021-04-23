@@ -22,6 +22,6 @@ HTTP endpoints down below:
 - Akka          - Mainstream library for creating high-performance applications. 
 - Slick         - Most used ORM library in scala environment.
 - H2            - Simple and lightweight Database.
-- Lift-json     - Library for simplifying work with JSON.
+- Spray-json    - Library for simplifying work with JSON.
 - Logback       - Classic logging utility. 
 

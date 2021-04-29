@@ -1,5 +1,5 @@
 // Scala Linter
-addSbtPlugin("org.wartremover" % "sbt-wartremover" % "2.4.13")
+//addSbtPlugin("org.wartremover" % "sbt-wartremover" % "2.4.13")
 
 // Easy IDEA configs
 addSbtPlugin("org.jetbrains" % "sbt-ide-settings" % "1.1.0")

@@ -1,8 +1,7 @@
 package com.haile.app
 package database
 
-import domain.User
-
+import com.haile.app.domain.user.User
 import slick.jdbc.H2Profile.api._
 
 object UsersTable {

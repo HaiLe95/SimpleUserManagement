@@ -1,5 +1,5 @@
 package com.haile.app
-package domain
+package domain.user
 
 /**
  *
@@ -9,8 +9,8 @@ package domain
  * @param birthday    wow the Birthday of User, Option[] because can be Null in DB;
  * @param isAvailable defines if our row is deleted, but in more soft way
  */
-case class User(id:           Option[Long],
-                firstName:    String,
-                lastName:     String,
-                birthday:     Option[java.sql.Date],
-                isAvailable:  Boolean)
+case class User(id: Option[Long],
+                firstName: String,
+                lastName: String,
+                birthday: Option[java.sql.Date],
+                isAvailable: Boolean)

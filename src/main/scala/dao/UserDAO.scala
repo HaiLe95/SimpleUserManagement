@@ -1,9 +1,8 @@
 package com.haile.app
 package dao
 
-import com.haile.app.domain.User
-import com.haile.app.domain.UserSearchParameters
 import com.haile.app.database.UsersTable
+import com.haile.app.domain.user.{User, UserSearchParameters}
 import com.haile.app.failure.Failure
 import com.haile.app.util.DatabaseFailureMapper
 import slick.jdbc.H2Profile.api._
@@ -19,7 +18,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
  * Provides DAO for Users entities for H2 database
  */
 
-object UserDAO {
+class UserDAO {
 
   // Initializing database instance and importing UserTableQuery
   val database = Database.forConfig("h2mem1")
@@ -54,7 +53,7 @@ object UserDAO {
   }
 
   /**
-   * Receive a specific user
+   * Receive a specific user, ignore if he's unavailable
    * @param id is used to track the right entity
    * @return the user it self, or if there's no row None instead
    */
@@ -102,7 +101,7 @@ object UserDAO {
   }
 
   /**
-   * Get all users with specified parameters
+   * Get all users with specified parameters, if users are unavailable ignore them
    * @param param all those fields to search in our database
    * @return the Sequence of Users
    */

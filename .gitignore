@@ -1,7 +1,22 @@
-target/
-.idea*
-**/.bsp/*
-
+# Stolen from my coworkers
+*.xml
 *.iml
-*.class
-*.log
+/.idea
+/.idea_modules
+**/.bsp/*
+**/target/*
+/bin
+
+
+*.sw[po]
+.cache
+.project
+.classpath
+.settings
+.DS_Store
+.metals
+.bloop
+project/metals.sbt
+
+# Project exclude paths
+/out/

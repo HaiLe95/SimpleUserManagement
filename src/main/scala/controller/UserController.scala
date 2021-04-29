@@ -5,22 +5,22 @@ import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import spray.json.DefaultJsonProtocol._
-
-import domain.{User, UserSearchParameters}
+import spray.json._
 import dao.UserDAO
 import util.DatabaseFailureMapper
-import util.DateMarshalling._
+import util.DateMarshalling.DateFormat
 
+import com.haile.app.domain.user.{User, UserSearchParameters}
 
 import scala.concurrent.Future
 import scala.util.Success
 
 object UserController {
 
-  implicit val userFormat       = jsonFormat5(User)
-  implicit val userParamFormat  = jsonFormat3(UserSearchParameters)
+  implicit val userFormat:      RootJsonFormat[User]                  = jsonFormat5(User)
+  implicit val userParamFormat: RootJsonFormat[UserSearchParameters]  = jsonFormat3(UserSearchParameters)
 
-  val userDao = UserDAO
+  val userDao: UserDAO = new UserDAO
 
   val route: Route =
     concat(

@@ -8,6 +8,6 @@ package domain.user
  * @param lastName  a param to search
  * @param birthday  a param to search
  */
-case class UserSearchParameters(firstName: Option[String] = None,
-                                lastName: Option[String] = None,
-                                birthday: Option[java.sql.Date] = None)
+case class UserSearchParameters(firstName:  Option[String] = None,
+                                lastName:   Option[String] = None,
+                                birthday:   Option[java.sql.Date] = None)

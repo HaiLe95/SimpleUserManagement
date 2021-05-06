@@ -21,10 +21,12 @@ libraryDependencies ++= {
     akka  % "akka-http-spray-json_2.13" % akkaHttpVersion,
 
     // Logger
-    "ch.qos.logback"      % "logback-classic" % "1.2.3",
+    "ch.qos.logback"      % "logback-classic"       % "1.2.3",
     // H2 database for simplicity
-    "com.h2database"      % "h2"              % "1.4.200",
+    "com.h2database"      % "h2"                    % "1.4.200",
+    // MySQL database for docker compose
+    "mysql"               % "mysql-connector-java"  % "8.0.24",
     // Slick ORM
-    "com.typesafe.slick"  % "slick_2.13"      % "3.3.3"
+    "com.typesafe.slick"  % "slick_2.13"            % "3.3.3"
   )
 }

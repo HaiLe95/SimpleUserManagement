@@ -11,7 +11,7 @@ object UsersTable {
     def firstName:    Rep[String]         = column[String]("FIRST_NAME")
     def lastName:     Rep[String]         = column[String]("LAST_NAME")
     def birthday:     Rep[java.sql.Date]  = column[java.sql.Date]("BIRTHDAY")
-    def isAvailable:  Rep[Boolean]        = column[Boolean]("IS_DELETED")
+    def isAvailable:  Rep[Boolean]        = column[Boolean]("NOT_DELETED")
 
     override def * = (id.?, firstName, lastName, birthday.?, isAvailable).mapTo[User]
   }

@@ -7,8 +7,6 @@ import akka.http.scaladsl.server.Route
 
 import controller.UserController
 
-
-
 object Boot {
 
   def main(args: Array[String]): Unit = {

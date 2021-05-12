@@ -11,11 +11,16 @@ import java.sql.SQLException
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
+/**
+ *  Provides DAO for Books in MySQL database
+ */
+
 class BookDAO {
 
   // configs db
   val database  = Database.forConfig("mysql")
   val books     = BooksTable.books
+
   // check if table exist, create if not
   database.run(books.schema.createIfNotExists)
 
@@ -51,7 +56,7 @@ class BookDAO {
    */
   def get(id: Long): Future[Option[Book]] = {
     val query = books
-      .filter(_.id == id)
+      .filter(_.id === id)
       .filter(_.isAvailable)
     database.run(
       query
@@ -67,7 +72,7 @@ class BookDAO {
    */
   def update(id: Long, book: Book): Future[Int] = {
     val query = books
-      .filter(_.id == id)
+      .filter(_.id === id)
     database.run(
       query
         .update(
@@ -88,7 +93,7 @@ class BookDAO {
    */
   def delete(id: Long): Future[Int] = {
     val query = books
-      .filter(_.id == id)
+      .filter(_.id === id)
       .map(_.isAvailable)
     database.run(
       query.update(false)

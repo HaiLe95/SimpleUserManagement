@@ -1,7 +1,7 @@
 version: '3'
 services:
   db:
-    image: library/mysql:8.0.24
+    image: mysql:8.0.24
     container_name: doggie
     ports:
       - 3306:3306
@@ -9,11 +9,13 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: books
     restart: always
+    hostname: 0.0.0.0
   app:
     image: library/usermanage
     container_name: app
     ports:
       - 8080:8080
     restart: always
-    links:
+    depends_on:
       - db
+    hostname: 0.0.0.0
